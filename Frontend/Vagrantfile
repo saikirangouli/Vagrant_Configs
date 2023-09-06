@@ -1,0 +1,23 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "base"
+  # Frontend VM Setup
+  config.vm.define "frontend" do |frontend|
+    frontend.vm.box =  "generic/ubuntu2204"
+    frontend.vm.network "public_network" #Bridged Network
+    config.vm.network "forwarded_port", guest: 3000, host: 8080, host_ip: "10.0.2.15"
+    config.vm.synced_folder ".", "/var/www/"
+    config.ssh.username = "vagrant"
+    config.ssh.password = "vagrant"
+    #Provisioning script for frontend
+    config.vm.provision "shell", inline: <<-SHELL
+      curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+      sudo apt-get install -y nodejs
+      git clone https://github.com/saikirangouli/Demo_Application.git
+      git checkout Frontend
+      cd Demo_Application/
+      npm install
+      npm install axios
+      npm start
+    SHELL
+  end
+end 
