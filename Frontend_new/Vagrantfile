@@ -1,0 +1,19 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/bionic64"  # Replace with your desired box
+
+  # Configure a private network with a static IP address
+  config.vm.network "private_network", type: "static", ip: "192.168.33.10"
+
+  # Additional VM configuration goes here
+
+  # Provisioning script to install Node.js and host the React application
+  config.vm.provision "shell", inline: <<-SHELL
+    sudo apt-get update
+    sudo apt-get install -y nodejs npm
+    git clone -b Frontend https://github.com/saikirangouli/Demo_Application.git
+    cd Demo_Application
+    npm install
+    npm install axios
+    npm start
+  SHELL
+end
