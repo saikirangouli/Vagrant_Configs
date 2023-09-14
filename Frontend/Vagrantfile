@@ -44,3 +44,5 @@ Vagrant.configure("2") do |config|
 end 
 #frontend ---> 192.168.0.101
 #path --> /home/vagrant/Demo_Application
+
+#sudo chmod -R 777 /home/vagrant/Demo_Application
